@@ -1,0 +1,19 @@
+{
+  "name": "andreorumiarestaurant",
+  "description": "The restaurant of your dreams",
+  "main": "index.js",
+  "authors": [
+    "Andreea Stan"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "private": true,
+  "dependencies": {
+    "jquery": "^2.2.1",
+    "toastr": "^2.1.2",
+    "angular": "^1.5.0",
+    "angular-resource": "^1.5.0",
+    "angular-route": "^1.5.0"
+  }
+}
