@@ -10,5 +10,20 @@ html
         link(rel="stylesheet", href="/vendor/toastr/toastr.css")
         link(rel="stylesheet", href="/css/style.css")
     body(ng-app="app")
-        block main-content
+        header
+        nav
+            div.nav-wrapper
+                a.brand-logo(href="/")
+                    img(src="/favicon.ico" id="logo-image")
+                ul.right.hide-on-med-and-down
+                    li
+                    a(href="#") Test
+        main
+            block main-content
+        footer.page-footer
+            div.container
+                div.row
+                    h6.white-text Andreorumia Restaurant - The restaurant of your dreams
+            div.footer-copyright
+                div.contaier © 2016 - Andreorumia, All rights reserved.
         include scripts
