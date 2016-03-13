@@ -25,7 +25,12 @@ app.use(stylus.middleware(
 ));
 app.use(express.static(__dirname + '/public'));
 
-mongoose.connect('mongodb://localhost/restaurant');
+if(env === 'development'){
+    mongoose.connect('mongodb://localhost/restaurant');
+}
+else {
+    mongoose.connect('mongodb://andreea:12345678@ds064718.mlab.com:64718/andreorumia-restaurant');
+}
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error...'));
 db.once('open', function(){
@@ -49,6 +54,6 @@ app.get('*', function(req, res){
     });
 });
 
-var port = 3030;
+var port = process.env.PORT || 3030;
 app.listen(port);
 console.log('Listening to port ' + port + '...');
