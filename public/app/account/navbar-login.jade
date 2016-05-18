@@ -1,0 +1,12 @@
+div.row(ng-hide="user.isLogged" ng-controller="loginCtrl")
+    div.card.col.s6.m3
+        form
+            div.input-field
+                input.validate(type="text" id="username" ng-model="user.username")
+                label(for="username") Username
+            div.input-field
+                input.validate(type="password" id="password" ng-model="user.password")
+                label(for="password") Password
+            a.waves-effect.waves-light.btn(ng-click="login(user)") Sign in
+            br
+            br

@@ -15,11 +15,14 @@ html
             div.nav-wrapper
                 a.brand-logo(href="/")
                     img(src="/favicon.ico" id="logo-image")
-                ul.right.hide-on-med-and-down
-                    li
-                    a(href="#") Test
+                ul.right
+                    li(ng-hide="user.isLogged")
+                        a(href="/") Login
+                    li(ng-show="user.isLogged")
+                        a(href="/") Logout
         main
             block main-content
+            div(ng-include="'/partials/account/navbar-login'")
         footer.page-footer
             div.container
                 div.row

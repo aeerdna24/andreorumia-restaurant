@@ -1,59 +1,50 @@
-var express = require('express')
-    stylus = require('stylus'),
-    logger = require('morgan'),
-    bodyParser = require('body-parser')
-    mongoose = require('mongoose');
+var express = require('express'),
+    mongoose = require('mongoose'),
+    passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy;
 
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
 var app = express();
 
-function compile(str, path){
-    return stylus(str).set('filename', path);
-}
+var config = require('./server/config/config.js')[env];
 
-app.set('views',  __dirname + '/server/views');
-app.set('view engine', 'jade');
-app.use(logger('dev'));
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
-app.use(stylus.middleware(
-    {
-        src: __dirname + '/public',
-        compile: compile
+require('./server/config/express.js')(app, config);
+
+require('./server/config/mongoose.js')(config);
+
+var User = mongoose.model('User');
+passport.use(new LocalStrategy(
+    function (username, passport, done) {
+        User.findOne({ username: username }).exec(function (err, user) {
+            if (user) {
+                return done(null, user);
+            }
+            else {
+                return done(null, false);
+            }
+        });
     }
 ));
-app.use(express.static(__dirname + '/public'));
 
-if(env === 'development'){
-    mongoose.connect('mongodb://localhost/restaurant');
-}
-else {
-    mongoose.connect('mongodb://andreea:12345678@ds064718.mlab.com:64718/andreorumia-restaurant');
-}
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error...'));
-db.once('open', function(){
-    console.log('restaurant db opened');
+passport.serializeUser(function (user, done) {
+    if (user) {
+        done(null, user._id);
+    }
 });
 
-var messageSchema = mongoose.Schema({message: String});
-var Message = mongoose.model('Message', messageSchema);
-var mongoMessage;
-Message.findOne().exec(function(err, messageDoc){
-    mongoMessage = messageDoc.message;
-});
-
-app.get('/partials/:partialPath', function(req, res){
-   res.render('partials/' + req.params.partialPath);
-});
-
-app.get('*', function(req, res){
-    res.render('index', {
-        mongoMessage: mongoMessage
+passport.deserializeUser(function (id, done) {
+    User.findOne({ _id: id }).exec(function (err, user) {
+        if(user){
+            return done(null, user);
+        }
+        else{
+            return done(null, false);
+        }
     });
 });
 
-var port = process.env.PORT || 3030;
-app.listen(port);
-console.log('Listening to port ' + port + '...');
+require('./server/config/routes.js')(app);
+
+app.listen(config.port);
+console.log('Listening to port ' + config.port + '...');
