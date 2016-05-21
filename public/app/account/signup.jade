@@ -1,0 +1,17 @@
+div.custom-container
+    h4 New User
+    form(name="signupForm")
+        div.input-field
+            input.validate(type="email" id="email" ng-model="user.email", required)
+            label(for="email") Email
+        div.input-field
+            input.validate(type="password" id="password" ng-model="user.password" required)
+            label(for="password") Password
+        div.input-field
+            input.validate(type="text" id="fname" ng-model="user.firstName", required)
+            label(for="fname") First Name
+        div.input-field
+            input.validate(type="text" id="lname" ng-model="user.lastName", required)
+            label(for="lname") Last Name
+        a.waves-effect.waves-light.btn(ng-click="signup()" ng-disabled="signupForm.$invalid") Sign up
+        a.waves-effect.waves-light.btn(href="/") Cancel

@@ -27,6 +27,20 @@ angular.module('app').factory('auth', function ($http, identity, $q, User) {
                 });
             return deferred.promise;
         },
+        createUser: function(user){
+          var newUser = new User(user);
+          var deferred = $q.defer();
+          
+          newUser.$save().then(function(){
+             identity.currentUser = newUser;
+             deferred.resolve(); 
+          },
+          function(){
+              deferred.reject();
+          });
+          
+          return deferred.promise;  
+        },
         authorizeCurrentUserForRoute: function(role){
             if(identity.isAuthorized(role)){
                 return true;
@@ -34,6 +48,28 @@ angular.module('app').factory('auth', function ($http, identity, $q, User) {
             else{
                 return $q.reject('not authorized');
             }
+        },
+        authorizeAuthenticatedUserForRoute: function(){
+            if(identity.isAuthenticated(role)){
+                return true;
+            }
+            else{
+                return $q.reject('not authorized');
+            }
+        },
+        updateCurrentUser: function(user){
+            var deferred = $q.defer();
+            var clone = angular.copy(identity.currentUser);
+            angular.extend(clone, user);
+            clone.$update().then(function(){
+                identity.currentUser = clone;
+                deferred.resolve();
+            },
+            function(response){
+                deferred.reject(response.data.reason);
+            });
+            
+            return deferred.promise;
         }
     }
 });

@@ -20,6 +20,10 @@ html
                     li.padd(ng-show="identity.currentUser.isAdmin()")
                         a(href="/admin/users") Admin
                 ul.right
+                    li
+                        a(href="/profile") Profile
+                    li
+                        a(href="/signup") Sign up
                     li(ng-hide="identity.isAuthenticated()")
                         a(href="/" ng-click="identity.showCard = true;") Login
                     li(ng-show="identity.isAuthenticated()")

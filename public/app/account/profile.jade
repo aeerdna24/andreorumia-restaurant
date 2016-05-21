@@ -1,0 +1,17 @@
+div.custom-container
+    h4 User Profile
+    form(name="profileForm")
+        div.input-field
+            input.validate(type="email" id="email" ng-model="user.username", required)
+            label(for="email") Email
+        div.input-field
+            input.validate(type="text" id="fname" ng-model="user.firstName", required)
+            label(for="fname") First Name
+        div.input-field
+            input.validate(type="text" id="lname" ng-model="user.lastName", required)
+            label(for="lname") Last Name
+        div.input-field
+            input.validate(type="password" id="password" ng-model="user.password")
+            label(for="password") Password
+        a.waves-effect.waves-light.btn(ng-click="update()" ng-disabled="profileForm.$invalid") Update
+        a.waves-effect.waves-light.btn(href="/") Cancel

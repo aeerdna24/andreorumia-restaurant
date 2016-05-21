@@ -1,9 +1,16 @@
 angular.module('app').factory('User', function ($resource) {
-    var UserResource = $resource('/api/users/:id', { _id: "@id" });
+    var UserResource = $resource('/api/users/:id',
+        {
+            _id: "@id"
+        },
+        {
+            method: 'PUT',
+            isArray: false
+        });
 
     UserResource.prototype.isAdmin = function () {
         return this.roles && this.roles.indexOf('admin') > -1;
     }
-    
+
     return UserResource;
 });
