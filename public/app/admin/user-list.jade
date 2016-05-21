@@ -1,0 +1,12 @@
+div.custom-container
+    table.stripped
+        thead
+            tr
+                th(data-field="index") #
+                th(data-field="fname") First Name
+                th(data-field="lname") Last Name
+        tbody
+            tr(ng-repeat="user in users track by $index")
+                td {{$index + 1}}
+                td {{user.firstName}}
+                td {{user.lastName}}

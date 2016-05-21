@@ -11,18 +11,23 @@ html
         link(rel="stylesheet", href="/css/style.css")
     body(ng-app="app")
         header
-        nav
+        nav(ng-controller="loginCtrl")
             div.nav-wrapper
-                a.brand-logo(href="/")
-                    img(src="/favicon.ico" id="logo-image")
+                ul
+                    li
+                        a.brand-logo(href="/")
+                            img(src="/favicon.ico" id="logo-image")
+                    li.padd(ng-show="identity.currentUser.isAdmin()")
+                        a(href="/admin/users") Admin
                 ul.right
-                    li(ng-hide="user.isLogged")
-                        a(href="/") Login
-                    li(ng-show="user.isLogged")
-                        a(href="/") Logout
+                    li(ng-hide="identity.isAuthenticated()")
+                        a(href="/" ng-click="identity.showCard = true;") Login
+                    li(ng-show="identity.isAuthenticated()")
+                        a(href="/" ng-click="logout()") Logout
         main
-            block main-content
+            include currentUser
             div(ng-include="'/partials/account/navbar-login'")
+            block main-content
         footer.page-footer
             div.container
                 div.row
